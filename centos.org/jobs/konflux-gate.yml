@@ -39,3 +39,6 @@
       - '5.0':
           foremanctl_branch: '3.3-stable'
           pytest_args: ''
+      - '5.1':
+          foremanctl_branch: '3.3-stable'
+          pytest_args: ''
