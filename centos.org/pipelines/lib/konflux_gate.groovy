@@ -83,6 +83,8 @@ def konflux_gate_test_on_duffy(imageRefs, foremanctlBranch, pytestArgs) {
                 // Use foremanctl's branch-specific default flavor/features; don't force
                 // an optional-feature set that can drift between foremanctl branches.
                 duffy_ssh("${inForemanctl} ${foremanctl} deploy ${imageArgs} --initial-admin-password=changeme --initial-organization \"Foreman CI\" --initial-location \"Internet\" --tuning development --content-import-path /custom/import --content-export-path /custom/export", boxname, './')
+                // Exercise an idempotent subsequent deploy with the persisted defaults.
+                duffy_ssh("${inForemanctl} ${foremanctl} deploy ${imageArgs}", boxname, './')
                 imageRefs.each { component, ref ->
                     def imageName = var_prefix[component].replace('_', '-')
                     duffy_ssh("${inForemanctl} vagrant ssh quadlet -c \"if sudo test -f /etc/containers/systemd/${imageName}.image; then sudo grep -Fx 'Image=${ref}' /etc/containers/systemd/${imageName}.image; fi\"", boxname, './')
