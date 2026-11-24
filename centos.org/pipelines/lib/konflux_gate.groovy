@@ -79,9 +79,9 @@ def konflux_gate_test_on_duffy(imageRefs, foremanctlBranch, pytestArgs) {
             stage('Deploy and test') {
                 duffy_ssh("${inForemanctl} ./forge vms start --vms 'quadlet client'", boxname, './')
                 duffy_ssh("${inForemanctl} ./forge setup-repositories", boxname, './')
-                // Keep the gate on foremanctl's branch-specific defaults, plus the
-                // Foreman Proxy/Remote Execution features required by test_foreman_rex.
-                duffy_ssh("${inForemanctl} ${foremanctl} pull-images ${imageArgs} --add-feature foreman-proxy --add-feature remote-execution", boxname, './')
+                // Pull foremanctl's branch-specific default flavor first; add Proxy/RE
+                // only on the subsequent deploy required for the test_foreman_rex scenario.
+                duffy_ssh("${inForemanctl} ${foremanctl} pull-images ${imageArgs}", boxname, './')
                 duffy_ssh("${inForemanctl} ${foremanctl} deploy ${imageArgs} --initial-admin-password=changeme --initial-organization \"Foreman CI\" --initial-location \"Internet\" --tuning development --content-import-path /custom/import --content-export-path /custom/export", boxname, './')
                 // Exercise the subsequent deploy with the required RE scenario enabled.
                 duffy_ssh("${inForemanctl} ${foremanctl} deploy ${imageArgs} --add-feature foreman-proxy --add-feature remote-execution", boxname, './')
