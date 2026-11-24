@@ -4,7 +4,8 @@ def konflux_components = ['candlepin-develop', 'foreman-develop', 'foreman-proxy
 def konflux_gate_job_name = 'konflux-gate-nightly-pipeline'
 def konflux_gate_rebuild = true
 def konflux_gate_foremanctl_branch = 'master'
-def konflux_gate_pytest_args = '--featureset=default'
+// Exercise the default Katello flavor; optional feature tests follow foremanctl defaults.
+def konflux_gate_pytest_args = ''
 def konflux_gate_applications = [
     'candlepin': ['candlepin-develop'],
     'foreman': ['foreman-develop', 'foreman-proxy-develop'],
